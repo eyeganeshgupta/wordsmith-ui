@@ -1,18 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Homepage from "./components/Homepage/Homepage";
+import Login from "./components/Users/Login";
 
 function App() {
-  const HomePage = () => {
-    return (
-      <h1 className="px-4 text-2xl font-bold underline">
-        Welcome to Wordsmith
-      </h1>
-    );
-  };
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

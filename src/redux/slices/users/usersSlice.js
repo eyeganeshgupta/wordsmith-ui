@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   },
 };
 
+// Async thunk action for user login
 export const loginAction = createAsyncThunk(
   "users/login",
   async (credentials, { rejectWithValue }) => {
@@ -32,6 +33,7 @@ export const loginAction = createAsyncThunk(
   }
 );
 
+// Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",
   initialState: INITIAL_STATE,

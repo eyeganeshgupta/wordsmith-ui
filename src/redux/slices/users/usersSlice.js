@@ -16,24 +16,30 @@ const INITIAL_STATE = {
   profile: {},
   userAuth: {
     error: null,
-    userInfo: {},
+    userInfo: localStorage.getItem("userInfo")
+      ? JSON.parse(localStorage.getItem("userInfo"))
+      : null,
   },
 };
 
-// Async thunk action for user login
+// ! Async thunk action for user login
 export const loginAction = createAsyncThunk(
   "users/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${USERS_API}/login`, credentials);
-      return response.data;
+      const { data } = await axios.post(`${USERS_API}/login`, credentials);
+
+      // * Saving the user into localStorage
+      localStorage.setItem("userInfo", JSON.stringify(data));
+
+      return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data || error?.message);
     }
   }
 );
 
-// Users slice with reducers for handling actions
+// ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",
   initialState: INITIAL_STATE,

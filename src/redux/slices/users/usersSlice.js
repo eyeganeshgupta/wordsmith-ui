@@ -7,6 +7,7 @@ const USERS_API = `${API_BASE_URL}/users`;
 const INITIAL_STATE = {
   loading: false,
   error: null,
+  success: false,
   user: null,
   users: [],
   isUpdated: false,
@@ -50,6 +51,7 @@ const usersSlice = createSlice({
 
     builder.addCase(loginAction.fulfilled, (state, action) => {
       state.userAuth.userInfo = action.payload;
+      state.success = true;
       state.loading = false;
       state.error = null;
     });

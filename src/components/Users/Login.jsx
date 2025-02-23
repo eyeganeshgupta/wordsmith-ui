@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { loginAction } from "../../redux/slices/users/usersSlice";
+import Error from "../Alert/Error";
+import Loading from "../Alert/Loading";
+import Success from "../Alert/Success";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -31,6 +34,10 @@ const Login = () => {
     });
   };
 
+  const { loading, success, error } = useSelector((state) => {
+    return state?.users;
+  });
+
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -44,6 +51,11 @@ const Login = () => {
           <p className="mb-12 font-medium text-lg text-gray-600 leading-normal">
             Enter your details below.
           </p>
+
+          {error && <Error message={error?.message} />}
+
+          {success && <Success message="Login Success" />}
+
           <form onSubmit={handleSubmit}>
             <label className="block mb-5">
               <input
@@ -68,12 +80,17 @@ const Login = () => {
                 onChange={handleChange}
               />
             </label>
-            <button
-              className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-              type="submit"
-            >
-              Login Account
-            </button>
+
+            {loading ? (
+              <Loading />
+            ) : (
+              <button
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+                type="submit"
+              >
+                Login Account
+              </button>
+            )}
 
             <p className="font-medium">
               <span className="m-2">Forgot Password?</span>

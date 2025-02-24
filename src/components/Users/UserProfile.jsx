@@ -34,7 +34,7 @@ export default function UserProfile() {
                   <div className="relative">
                     <img
                       className="h-32 w-full object-cover lg:h-48"
-                      src={profile.coverImageUrl}
+                      src={profile?.coverImageUrl}
                       alt=""
                     />
                     <button
@@ -50,7 +50,7 @@ export default function UserProfile() {
                       <div className="relative flex">
                         <img
                           className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src={profile.imageUrl}
+                          src={profile?.imageUrl}
                           alt=""
                         />
                         <button
@@ -64,7 +64,7 @@ export default function UserProfile() {
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
                           <h1 className="truncate text-2xl font-bold text-gray-900">
-                            {profile.name}
+                            {profile?.name}
                           </h1>
                         </div>
                       </div>
@@ -75,13 +75,12 @@ export default function UserProfile() {
                           className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
                           <svg
-                            className="-ml-0.5 h-5 w-5 text-gray-400"
+                            className="-ml-0.5 h-6 w-6 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth="1.5"
                             stroke="currentColor"
-                            className="w-6 h-6"
                           >
                             <path
                               strokeLinecap="round"
@@ -102,13 +101,12 @@ export default function UserProfile() {
                           className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
                           <svg
-                            className="-ml-0.5 h-5 w-5 text-gray-400"
+                            className="-ml-0.5 h-6 w-6 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth="1.5"
                             stroke="currentColor"
-                            className="w-6 h-6"
                           >
                             <path
                               strokeLinecap="round"
@@ -124,13 +122,12 @@ export default function UserProfile() {
                           className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
                           <svg
-                            className="-ml-0.5 h-5 w-5 text-gray-400"
+                            className="-ml-0.5 h-6 w-6 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth="1.5"
                             stroke="currentColor"
-                            className="w-6 h-6"
                           >
                             <path
                               strokeLinecap="round"
@@ -147,13 +144,12 @@ export default function UserProfile() {
                           className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
                           <svg
-                            className="-ml-0.5 h-5 w-5 text-gray-400"
+                            className="-ml-0.5 h-6 w-6 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth="1.5"
                             stroke="currentColor"
-                            className="w-6 h-6"
                           >
                             <path
                               strokeLinecap="round"
@@ -169,13 +165,12 @@ export default function UserProfile() {
                           className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
                           <svg
-                            className="-ml-0.5 h-5 w-5 text-gray-400"
+                            className="-ml-0.5 h-6 w-6 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth="1.5"
                             stroke="currentColor"
-                            className="w-6 h-6"
                           >
                             <path
                               strokeLinecap="round"
@@ -189,7 +184,7 @@ export default function UserProfile() {
                     </div>
                     <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
                       <h1 className="truncate text-2xl font-bold text-gray-900">
-                        {profile.name}
+                        {profile?.name}
                       </h1>
                     </div>
                   </div>
@@ -197,7 +192,7 @@ export default function UserProfile() {
 
                 <div className="mt-6 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                   <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                    {Object.entries(profile.fields).map(([field, value]) => (
+                    {Object.entries(profile?.fields).map(([field, value]) => (
                       <div className="sm:col-span-1" key={field}>
                         <dt className="text-sm font-medium text-gray-500">
                           {field}
@@ -213,7 +208,7 @@ export default function UserProfile() {
                       </h2>
                     </div>
                     <div className="mt-5 text-sm text-gray-700">
-                      {profile.about}
+                      {profile?.about}
                     </div>
                   </div>
                 </div>

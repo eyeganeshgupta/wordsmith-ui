@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginAction } from "../../redux/slices/users/usersSlice";
 import Error from "../Alert/Error";
 import Loading from "../Alert/Loading";
@@ -8,6 +8,7 @@ import Success from "../Alert/Success";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     password: "",
@@ -34,9 +35,15 @@ const Login = () => {
     });
   };
 
-  const { loading, success, error } = useSelector((state) => {
+  const { loading, success, userAuth, error } = useSelector((state) => {
     return state?.users;
   });
+
+  useEffect(() => {
+    if (userAuth?.userInfo?.token) {
+      navigate("/user-profile");
+    }
+  }, [userAuth?.userInfo?.token, navigate]);
 
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">

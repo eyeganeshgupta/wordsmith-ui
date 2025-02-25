@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/AuthRoute/ProtectedRoute";
 import Homepage from "./components/Homepage/Homepage";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import PublicNavbar from "./components/Navbar/PublicNavbar";
@@ -16,7 +17,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/user-profile" element={<UserProfile />} />
+        <Route
+          path="/user-profile"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

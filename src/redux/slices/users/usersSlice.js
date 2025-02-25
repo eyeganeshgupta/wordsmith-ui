@@ -40,6 +40,11 @@ export const loginAction = createAsyncThunk(
   }
 );
 
+export const logoutAction = createAsyncThunk("users/logout", async () => {
+  localStorage.removeItem("userInfo");
+  return true;
+});
+
 // ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",

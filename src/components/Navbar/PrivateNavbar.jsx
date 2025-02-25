@@ -12,10 +12,12 @@ function classNames(...classes) {
 
 export default function PrivateNavbar() {
   const dispatch = useDispatch();
+
   const logoutHandler = () => {
-    console.log("logout action called");
     dispatch(logoutAction());
+    window.location.reload();
   };
+
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (

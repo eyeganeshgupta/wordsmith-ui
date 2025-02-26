@@ -45,6 +45,19 @@ export const logoutAction = createAsyncThunk("users/logout", async () => {
   return true;
 });
 
+// ! Async thunk action for user registration
+export const registerAction = createAsyncThunk(
+  "users/register",
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(`${USERS_API}/register`, credentials);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
 // ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",
@@ -64,6 +77,23 @@ const usersSlice = createSlice({
     builder.addCase(loginAction.rejected, (state, action) => {
       state.error = action.payload;
       state.userAuth.userInfo = null;
+      state.loading = false;
+    });
+
+    builder.addCase(registerAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(registerAction.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(registerAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.user = null;
       state.loading = false;
     });
   },

@@ -1,7 +1,12 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { registerAction } from "../../redux/slices/users/usersSlice";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,7 +20,14 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // resetting form
+    dispatch(
+      registerAction({
+        username: formData?.username,
+        password: formData?.password,
+        email: formData.email,
+      })
+    );
+
     setFormData({
       email: "",
       password: "",
@@ -23,8 +35,16 @@ const Register = () => {
     });
   };
 
+  const { user } = useSelector((state) => state?.users);
+
+  useEffect(() => {
+    if (user?.status === "success") {
+      navigate("/login");
+    }
+  }, [user?.status, navigate]);
+
   return (
-    <form className="w-full lg:w-1/2">
+    <form onSubmit={handleSubmit} className="w-full lg:w-1/2">
       <div className="flex flex-col items-center p-10 xl:px-24 xl:pb-12 bg-white lg:max-w-xl lg:ml-auto rounded-4xl shadow-2xl">
         <img
           className="relative -top-2 -mt-16 mb-6 h-16"

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { resetErrorAction, resetSuccessAction } from "../global/globalSlice";
 
 const API_BASE_URL = "http://localhost:8087/api/v1";
 const USERS_API = `${API_BASE_URL}/users`;
@@ -10,10 +11,6 @@ const INITIAL_STATE = {
   success: false,
   user: null,
   users: [],
-  isUpdated: false,
-  isDeleted: false,
-  isEmailSent: false,
-  isPasswordReset: false,
   profile: {},
   userAuth: {
     error: null,
@@ -95,6 +92,14 @@ const usersSlice = createSlice({
       state.error = action.payload;
       state.user = null;
       state.loading = false;
+    });
+
+    builder.addCase(resetSuccessAction.fulfilled, (state) => {
+      state.success = false;
+    });
+
+    builder.addCase(resetErrorAction.fulfilled, (state) => {
+      state.error = null;
     });
   },
 });

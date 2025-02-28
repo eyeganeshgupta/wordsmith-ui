@@ -1,3 +1,4 @@
+import PublicPosts from "../Posts/PublicPosts";
 import Register from "../Users/Register";
 
 const Homepage = () => {
@@ -81,7 +82,7 @@ const Homepage = () => {
         </div>
       </section>
       {/* Home posts list */}
-      {/* <HomePostsLists /> */}
+      <PublicPosts />
     </div>
   );
 };

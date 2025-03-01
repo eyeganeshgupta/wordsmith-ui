@@ -4,7 +4,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logoutAction } from "../redux/slices/users/userSlices";
+import { logoutAction } from "../../redux/slices/users/usersSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

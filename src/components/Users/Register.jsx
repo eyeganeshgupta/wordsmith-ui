@@ -54,7 +54,7 @@ const Register = () => {
         <img
           className="relative -top-2 -mt-16 mb-6 h-16"
           src="flex-ui-assets/logos/flex-circle-green.svg"
-          alt
+          alt="register"
         />
 
         <h2 className="mb-4 text-2xl md:text-3xl text-coolGray-900 font-bold text-center">

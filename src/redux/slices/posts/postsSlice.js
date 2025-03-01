@@ -17,7 +17,7 @@ export const fetchPublicPostsAction = createAsyncThunk(
   "posts/fetch-public-posts",
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${POSTS_API}/public`);
+      const { data } = await axios.get(`${POSTS_API}/public-posts`);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data || error?.message);
@@ -42,7 +42,7 @@ const postsSlice = createSlice({
 
     builder.addCase(fetchPublicPostsAction.rejected, (state, action) => {
       state.error = action.payload;
-      state.userAuth.userInfo = null;
+      state.posts = null;
       state.loading = false;
     });
 

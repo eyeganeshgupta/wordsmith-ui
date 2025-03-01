@@ -50,7 +50,7 @@ const Login = () => {
       <div className="container px-4 mx-auto">
         <div className="text-center max-w-md mx-auto">
           <a className="mb-36 inline-block" href="#">
-            <img src="flaro-assets/logos/flaro-logo-black-xl.svg" alt />
+            <img src="flaro-assets/logos/flaro-logo-black-xl.svg" alt="login" />
           </a>
           <h2 className="mb-4 text-6xl md:text-7xl text-center font-bold font-heading tracking-px-n leading-tight">
             Login to your account

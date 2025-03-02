@@ -1,7 +1,24 @@
-import { useState } from "react";
-import Select from "react-select/base";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
+import { fetchAllCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 
 const AddPost = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAction());
+  }, [dispatch]);
+
+  const { categories } = useSelector((state) => state?.categories);
+
+  const options = categories?.data?.map((category) => {
+    return {
+      value: category?._id,
+      label: category?.name,
+    };
+  });
+
   const [formData, setFormData] = useState({
     title: "",
     image: null,

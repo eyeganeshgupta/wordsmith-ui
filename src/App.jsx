@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/AuthRoute/ProtectedRoute";
 import Homepage from "./components/Homepage/Homepage";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import PublicNavbar from "./components/Navbar/PublicNavbar";
+import AddPost from "./components/Posts/AddPost";
 import Login from "./components/Users/Login";
 import UserProfile from "./components/Users/UserProfile";
 
@@ -16,12 +17,23 @@ function App() {
       {isLogin ? <PrivateNavbar /> : <PublicNavbar />}
       <Routes>
         <Route path="/" element={<Homepage />} />
+
         <Route path="/login" element={<Login />} />
+
         <Route
           path="/user-profile"
           element={
             <ProtectedRoute>
               <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/add-post"
+          element={
+            <ProtectedRoute>
+              <AddPost />
             </ProtectedRoute>
           }
         />

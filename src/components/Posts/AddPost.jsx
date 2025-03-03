@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { fetchAllCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
+import { addPostAction } from "../../redux/slices/posts/postsSlice";
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,8 @@ const AddPost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    dispatch(addPostAction(formData));
 
     setFormData({
       title: "",

@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { fetchAllCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 import { addPostAction } from "../../redux/slices/posts/postsSlice";
+import Error from "../Alert/Error";
+import Loading from "../Alert/Loading";
+import Success from "../Alert/Success";
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -19,6 +22,10 @@ const AddPost = () => {
       label: category?.name,
     };
   });
+
+  const { loading, success, post, error } = useSelector(
+    (state) => state?.posts
+  );
 
   const [formData, setFormData] = useState({
     title: "",
@@ -59,6 +66,12 @@ const AddPost = () => {
           <h2 className="mb-4 text-2xl md:text-3xl text-coolGray-900 font-bold text-center">
             Add New Post
           </h2>
+          {/* error */}
+          {error && <Error message={error?.message} />}
+
+          {/* success */}
+          {success && <Success message="Post created successfully" />}
+
           <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
             Share your thoughts and ideas with the community
           </h3>
@@ -104,12 +117,16 @@ const AddPost = () => {
             />
           </label>
           {/* button */}
-          <button
-            className="mb-4 inline-block py-3 px-7 w-full leading-6 text-green-50 font-medium text-center bg-green-500 hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md"
-            type="submit"
-          >
-            Post
-          </button>
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              className="mb-4 inline-block py-3 px-7 w-full leading-6 text-green-50 font-medium text-center bg-green-500 hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md"
+              type="submit"
+            >
+              Post
+            </button>
+          )}
         </div>
       </form>
     </div>

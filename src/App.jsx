@@ -5,6 +5,7 @@ import Homepage from "./components/Homepage/Homepage";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import PublicNavbar from "./components/Navbar/PublicNavbar";
 import AddPost from "./components/Posts/AddPost";
+import PostDetails from "./components/Posts/PostDetails";
 import Login from "./components/Users/Login";
 import UserProfile from "./components/Users/UserProfile";
 
@@ -34,6 +35,15 @@ function App() {
           element={
             <ProtectedRoute>
               <AddPost />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/posts/:postId"
+          element={
+            <ProtectedRoute>
+              <PostDetails />
             </ProtectedRoute>
           }
         />

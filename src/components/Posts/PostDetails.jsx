@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { fetchSinglePostAction } from "../../redux/slices/posts/postsSlice";
 import Error from "../Alert/Error";
 import Loading from "../Alert/Loading";
+import PostStats from "./PostStats";
 
 const PostDetails = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,20 @@ const PostDetails = () => {
   useEffect(() => {
     dispatch(fetchSinglePostAction(postId));
   }, [dispatch, postId]);
+
+  const totalReactions =
+    post?.data?.likes?.length + post?.data?.dislikes?.length;
+  const reactionRatio =
+    totalReactions > 0 ? (post?.data?.likes?.length / totalReactions) * 100 : 0;
+
+  // Estimate reading time based on content length
+  // Assuming an average reading speed of 200 words per minute
+  const contentWords = post?.data?.content?.split(" ").length;
+  const readingTime = Math.ceil(contentWords / 200);
+
+  const views = post?.data?.postViews?.length;
+
+  const createdAt = post?.data?.createdAt;
 
   console.log(loading);
   console.log(success);
@@ -91,6 +106,17 @@ const PostDetails = () => {
             }}
           >
             {/* Posts stats */}
+            <PostStats
+              views={views}
+              likes={post?.data?.likes?.length}
+              dislikes={post?.data?.dislikes?.length}
+              postViews={post?.data?.postViews?.length}
+              totalComments={post?.data?.comments?.length}
+              readingTime={readingTime}
+              totalReactions={totalReactions}
+              reactionRatio={reactionRatio}
+              createdAt={createdAt}
+            />
           </div>
           <div className="container px-4 mx-auto">
             <div className="mx-auto md:max-w-3xl">

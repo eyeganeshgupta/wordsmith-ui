@@ -13,6 +13,8 @@ const PublicPosts = () => {
 
   const { loading, posts, error } = useSelector((state) => state?.posts);
 
+  console.log(posts);
+
   return (
     <>
       <div>
@@ -41,10 +43,10 @@ const PublicPosts = () => {
                 <Loading />
               ) : error ? (
                 <h3 className="text-red-500 text-center">{error?.message}</h3>
-              ) : posts?.posts?.length == 0 ? (
+              ) : posts?.data?.length == 0 ? (
                 <h1>No Post found</h1>
               ) : (
-                posts?.posts?.map((post) => {
+                posts?.data?.map((post) => {
                   return (
                     <div className="w-full md:w-1/2 px-4 mb-8" key={post?._id}>
                       <a

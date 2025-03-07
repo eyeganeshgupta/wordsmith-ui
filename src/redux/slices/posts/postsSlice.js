@@ -51,17 +51,30 @@ export const addPostAction = createAsyncThunk(
   }
 );
 
+export const fetchSinglePostAction = createAsyncThunk(
+  "post/fetch-single-post-action",
+  async (postId, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${POSTS_API}/${postId}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
     builder.addCase(fetchPublicPostsAction.pending, (state) => {
       state.loading = true;
+      state.success = false;
+      state.error = null;
     });
 
     builder.addCase(fetchPublicPostsAction.fulfilled, (state, action) => {
       state.posts = action.payload;
-      state.success = true;
       state.loading = false;
       state.error = null;
     });
@@ -74,6 +87,8 @@ const postsSlice = createSlice({
 
     builder.addCase(addPostAction.pending, (state) => {
       state.loading = true;
+      state.success = false;
+      state.error = null;
     });
 
     builder.addCase(addPostAction.fulfilled, (state, action) => {
@@ -84,6 +99,25 @@ const postsSlice = createSlice({
     });
 
     builder.addCase(addPostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.post = null;
+      state.loading = false;
+    });
+
+    builder.addCase(fetchSinglePostAction.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = null;
+    });
+
+    builder.addCase(fetchSinglePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(fetchSinglePostAction.rejected, (state, action) => {
       state.error = action.payload;
       state.post = null;
       state.loading = false;

@@ -63,6 +63,26 @@ export const fetchSinglePostAction = createAsyncThunk(
   }
 );
 
+export const fetchPrivatePostsAction = createAsyncThunk(
+  "posts/fetch-private-posts",
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.get(`${POSTS_API}`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
@@ -120,6 +140,24 @@ const postsSlice = createSlice({
     builder.addCase(fetchSinglePostAction.rejected, (state, action) => {
       state.error = action.payload;
       state.post = null;
+      state.loading = false;
+    });
+
+    builder.addCase(fetchPrivatePostsAction.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = null;
+    });
+
+    builder.addCase(fetchPrivatePostsAction.fulfilled, (state, action) => {
+      state.posts = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(fetchPrivatePostsAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.posts = null;
       state.loading = false;
     });
 

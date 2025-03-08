@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 import { fetchPrivatePostsAction } from "../../redux/slices/posts/postsSlice";
 import truncatePost from "../../utils/truncatePost";
 import LoadingComponent from "../Alert/LoadingComponent";
@@ -12,11 +13,26 @@ const PostLists = () => {
   const { posts, error, loading } = useSelector((state) => state?.posts);
 
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction());
-  }, [dispatch]);
+    if (error?.message === "Token expired/Invalid") {
+      navigate("/login");
+    }
+  }, [error?.message, navigate]);
+
+  // Pagination / search term state
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("");
+
+  // dispatch fetching posts
+  useEffect(() => {
+    dispatch(fetchPrivatePostsAction({ page, limit: 4, searchTerm, category }));
+    dispatch(fetchCategoriesAction());
+  }, [dispatch, page, searchTerm, category]);
 
   const { categories } = useSelector((state) => state?.categories);
 
+  const handleNext = () => setPage(page + 1);
+  const handlePrev = () => setPage(page > 1 ? page - 1 : 1);
   return (
     <>
       <div>
@@ -135,6 +151,21 @@ const PostLists = () => {
             </div>
           </div>
         </section>
+        {/* Pagination buttons */}
+        <div className="flex justify-center items-center my-4 space-x-2">
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handlePrev}
+          >
+            Prev
+          </button>
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleNext}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );

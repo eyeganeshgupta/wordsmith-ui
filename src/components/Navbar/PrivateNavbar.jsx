@@ -2,6 +2,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
+import { FaBlog } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutAction } from "../../redux/slices/users/usersSlice";
@@ -37,16 +38,8 @@ export default function PrivateNavbar() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://cdn-icons-png.flaticon.com/512/1458/1458485.png"
-                    alt="Wordsmith"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://cdn-icons-png.flaticon.com/512/1458/1458485.png"
-                    alt="Wordsmith"
-                  />
+                  <FaBlog className="block text-green-500 h-8 w-auto lg:hidden" />
+                  <FaBlog className="hidden text-green-500 h-8 w-auto lg:block" />
                 </div>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
@@ -68,7 +61,7 @@ export default function PrivateNavbar() {
                 <div className="flex-shrink-0">
                   <Link
                     to={"/add-post"}
-                    className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                     Add New Post

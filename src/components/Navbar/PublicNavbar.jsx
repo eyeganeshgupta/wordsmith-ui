@@ -1,6 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { FaBlog } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function classNames(...classes) {
@@ -27,16 +28,8 @@ export default function PublicNavbar() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://cdn-icons-png.flaticon.com/512/1458/1458485.png"
-                    alt="Wordsmith"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://cdn-icons-png.flaticon.com/512/1458/1458485.png"
-                    alt="Wordsmith"
-                  />
+                  <FaBlog className="block text-green-500 h-8 w-auto lg:hidden" />
+                  <FaBlog className="hidden text-green-500 h-8 w-auto lg:block" />
                 </div>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}

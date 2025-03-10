@@ -1,16 +1,22 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { fetchSinglePostAction } from "../../redux/slices/posts/postsSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  deletePostAction,
+  fetchSinglePostAction,
+} from "../../redux/slices/posts/postsSlice";
 import Error from "../Alert/Error";
 import Loading from "../Alert/Loading";
 import PostStats from "./PostStats";
 
 const PostDetails = () => {
-  const dispatch = useDispatch();
   const { postId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { post, error, loading } = useSelector((state) => state?.posts);
+  const { post, error, loading, success } = useSelector(
+    (state) => state?.posts
+  );
 
   const { userAuth } = useSelector((state) => state?.users);
 
@@ -32,10 +38,17 @@ const PostDetails = () => {
 
   const createdAt = post?.data?.createdAt;
 
-  const creatorOfPost = post?.author?._id?.toString();
+  const creatorOfPost = post?.data?.author?._id?.toString();
   const loggedInUser = userAuth?.userInfo?._id?.toString();
 
   const isCreator = creatorOfPost === loggedInUser;
+
+  const deletePostHandler = () => {
+    dispatch(deletePostAction(postId));
+    if (success) {
+      navigate("/posts");
+    }
+  };
 
   return (
     <>
@@ -124,6 +137,8 @@ const PostDetails = () => {
                 {post?.data?.content}
               </p>
 
+              {/* Edit and Delete Button */}
+
               {isCreator && (
                 <div className="flex justify-end mb-4">
                   <button className="p-2 mr-2 text-gray-500 hover:text-gray-700">
@@ -142,7 +157,10 @@ const PostDetails = () => {
                       />
                     </svg>
                   </button>
-                  <button className="p-2 text-gray-500 hover:text-gray-700">
+                  <button
+                    className="p-2 text-gray-500 hover:text-gray-700"
+                    onClick={deletePostHandler}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

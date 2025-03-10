@@ -23,9 +23,7 @@ const AddPost = () => {
     };
   });
 
-  const { loading, success, post, error } = useSelector(
-    (state) => state?.posts
-  );
+  const { loading, success, error } = useSelector((state) => state?.posts);
 
   const [formData, setFormData] = useState({
     title: "",

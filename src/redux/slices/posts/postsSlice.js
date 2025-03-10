@@ -52,7 +52,7 @@ export const addPostAction = createAsyncThunk(
 );
 
 export const fetchSinglePostAction = createAsyncThunk(
-  "post/fetch-single-post-action",
+  "post/fetch-single-post",
   async (postId, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${POSTS_API}/${postId}`);
@@ -76,6 +76,26 @@ export const fetchPrivatePostsAction = createAsyncThunk(
       };
 
       const { data } = await axios.get(`${POSTS_API}`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
+export const deletePostAction = createAsyncThunk(
+  "post/delete-post",
+  async (postId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.delete(`${POSTS_API}/${postId}`, config);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data || error?.message);
@@ -159,6 +179,27 @@ const postsSlice = createSlice({
       state.error = action.payload;
       state.posts = null;
       state.loading = false;
+    });
+
+    builder.addCase(deletePostAction.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = null;
+      state.post = null;
+    });
+
+    builder.addCase(deletePostAction.fulfilled, (state) => {
+      state.post = null;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(deletePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.post = null;
+      state.loading = false;
+      state.success = false;
     });
 
     builder.addCase(resetSuccessAction.fulfilled, (state) => {

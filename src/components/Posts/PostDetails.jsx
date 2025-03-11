@@ -76,30 +76,24 @@ const PostDetails = () => {
                 </p>
                 <span className="mx-1 text-green-500">•</span>
                 <p className="inline-block font-medium text-green-500">
-                  05 March 2025
+                  {new Date(post?.data?.createdAt)?.toDateString()}
                 </p>
               </div>
               <h2 className="mb-4 text-3xl font-bold leading-tight tracking-tighter md:text-5xl text-darkCoolGray-900">
                 {post?.data?.title}
               </h2>
-              <p className="mb-10 text-lg font-medium md:text-xl text-coolGray-500">
-                {post?.data?.content}
-              </p>
               <div className="flex items-center justify-center -mx-2 text-left">
                 <div className="w-auto px-2">
                   <img
                     className="w-12 h-12 rounded-full"
-                    src="https://cdn.pixabay.com/photo/2015/01/08/18/29/entrepreneur-593358_1280.jpg"
-                    alt="Ganesh Gupta"
+                    src={post?.data?.author?.image}
+                    alt={post?.data?.author?.username}
                   />
                 </div>
                 <div className="w-auto px-2">
                   <h4 className="text-base font-bold md:text-lg text-coolGray-800">
-                    Ganesh Gupta
+                    {post?.data?.author?.username}
                   </h4>
-                  <p className="text-base md:text-lg text-coolGray-500">
-                    05 March 2025
-                  </p>
                 </div>
               </div>
             </div>

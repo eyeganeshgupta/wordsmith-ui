@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 import { fetchPrivatePostsAction } from "../../redux/slices/posts/postsSlice";
 import truncatePost from "../../utils/truncatePost";
-import LoadingComponent from "../Alert/LoadingComponent";
+import Loading from "../Alert/Loading";
 
 const PostLists = () => {
   const dispatch = useDispatch();
@@ -82,7 +82,7 @@ const PostLists = () => {
               {/* loop */}
               {loading ? (
                 <div className="flex justify-center items-center h-full w-full">
-                  <LoadingComponent />
+                  <Loading />
                 </div>
               ) : error ? (
                 <h3 className="text-red-500 text-center">{error?.message}</h3>

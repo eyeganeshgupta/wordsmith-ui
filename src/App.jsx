@@ -7,6 +7,7 @@ import PublicNavbar from "./components/Navbar/PublicNavbar";
 import AddPost from "./components/Posts/AddPost";
 import PostDetails from "./components/Posts/PostDetails";
 import PostLists from "./components/Posts/PostLists";
+import UpdatePost from "./components/Posts/UpdatePost";
 import Login from "./components/Users/Login";
 import UserProfile from "./components/Users/UserProfile";
 
@@ -54,6 +55,15 @@ function App() {
           element={
             <ProtectedRoute>
               <PostLists />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/posts/:postId/update"
+          element={
+            <ProtectedRoute>
+              <UpdatePost />
             </ProtectedRoute>
           }
         />

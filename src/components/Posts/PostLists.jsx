@@ -102,7 +102,7 @@ const PostLists = () => {
                       >
                         <img
                           className="w-full"
-                          alt="post image"
+                          alt={post?.title}
                           src={post?.image}
                         />
                       </a>

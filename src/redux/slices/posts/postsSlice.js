@@ -152,7 +152,6 @@ const postsSlice = createSlice({
 
     builder.addCase(fetchSinglePostAction.fulfilled, (state, action) => {
       state.post = action.payload;
-      state.success = true;
       state.loading = false;
       state.error = null;
     });

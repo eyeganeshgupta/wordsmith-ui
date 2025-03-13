@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import Select from "react-select";
 import { fetchAllCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
-import { addPostAction } from "../../redux/slices/posts/postsSlice";
+import { updatePostAction } from "../../redux/slices/posts/postsSlice";
 import Error from "../Alert/Error";
 import Loading from "../Alert/Loading";
 import Success from "../Alert/Success";
 
 const UpdatePost = () => {
   const dispatch = useDispatch();
+
+  const { postId } = useParams();
 
   useEffect(() => {
     dispatch(fetchAllCategoriesAction());
@@ -46,51 +49,17 @@ const UpdatePost = () => {
     setFormData({ ...formData, image: e.target.files[0] });
   };
 
-  const validateForm = (data) => {
-    let errors = {};
-
-    if (!data.title) {
-      errors.title = "Title is required";
-    }
-
-    if (!data.image) {
-      errors.image = "Image is required";
-    }
-
-    if (!data.category) {
-      errors.category = "Category is required";
-    }
-
-    if (!data.content) {
-      errors.content = "Content is required";
-    }
-
-    return errors;
-  };
-
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    const formErrors = validateForm(formData);
-    setErrors({ ...errors, [name]: formErrors[name] });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const errors = validateForm(formData);
+    dispatch(updatePostAction({ ...formData, postId }));
 
-    setErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
-      dispatch(addPostAction(formData));
-
-      setFormData({
-        title: "",
-        image: null,
-        category: null,
-        content: "",
-      });
-    }
+    setFormData({
+      title: "",
+      image: null,
+      category: null,
+      content: "",
+    });
   };
 
   return (
@@ -104,7 +73,7 @@ const UpdatePost = () => {
           {error && <Error message={error?.message} />}
 
           {/* success */}
-          {success && <Success message="Post created successfully" />}
+          {success && <Success message="Post updated successfully" />}
 
           <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
             Share your thoughts and ideas with the community
@@ -118,10 +87,7 @@ const UpdatePost = () => {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              onBlur={handleBlur}
             />
-            {/* error here */}
-            {errors?.title && <p className="text-red-500">{errors?.title}</p>}
           </label>
           <label className="mb-4 flex flex-col w-full">
             <span className="mb-1 text-coolGray-800 font-medium">Image</span>
@@ -130,10 +96,7 @@ const UpdatePost = () => {
               type="file"
               name="image"
               onChange={handleFileChange}
-              onBlur={handleBlur}
             />
-            {/* error here */}
-            {errors?.image && <p className="text-red-500">{errors?.image}</p>}
           </label>
           {/* category here */}
           <label className="mb-4 flex flex-col w-full">
@@ -142,12 +105,7 @@ const UpdatePost = () => {
               options={options}
               name="category"
               onChange={handleSelectChange}
-              onBlur={handleBlur}
             />
-            {/* error here */}
-            {errors?.category && (
-              <p className="text-red-500">{errors?.category}</p>
-            )}
           </label>
           <label className="mb-4 flex flex-col w-full">
             <span className="mb-1 text-coolGray-800 font-medium">Content</span>
@@ -157,12 +115,7 @@ const UpdatePost = () => {
               name="content"
               value={formData.content}
               onChange={handleChange}
-              onBlur={handleBlur}
             />
-            {/* error here */}
-            {errors?.content && (
-              <p className="text-red-500">{errors?.content}</p>
-            )}
           </label>
           {/* button */}
           {loading ? (
@@ -172,7 +125,7 @@ const UpdatePost = () => {
               className="mb-4 inline-block py-3 px-7 w-full leading-6 text-green-50 font-medium text-center bg-green-500 hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-md"
               type="submit"
             >
-              Post
+              Update
             </button>
           )}
         </div>

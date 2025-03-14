@@ -157,6 +157,30 @@ export const likePostAction = createAsyncThunk(
   }
 );
 
+export const dislikePostAction = createAsyncThunk(
+  "post/dislike",
+  async (postId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${POSTS_API}/dislikes/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
@@ -287,6 +311,24 @@ const postsSlice = createSlice({
     });
 
     builder.addCase(likePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.post = null;
+      state.loading = false;
+    });
+
+    builder.addCase(dislikePostAction.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = null;
+    });
+
+    builder.addCase(dislikePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(dislikePostAction.rejected, (state, action) => {
       state.error = action.payload;
       state.post = null;
       state.loading = false;

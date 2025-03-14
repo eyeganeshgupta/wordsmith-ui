@@ -2,7 +2,10 @@ import moment from "moment";
 import { AiOutlineEye } from "react-icons/ai";
 import { RiEmotionLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { likePostAction } from "../../redux/slices/posts/postsSlice";
+import {
+  dislikePostAction,
+  likePostAction,
+} from "../../redux/slices/posts/postsSlice";
 
 const PostStats = ({
   views,
@@ -22,6 +25,11 @@ const PostStats = ({
 
   const likePostHandler = () => {
     dispatch(likePostAction(postId));
+    window.location.reload();
+  };
+
+  const dislikePostHandler = () => {
+    dispatch(dislikePostAction(postId));
     window.location.reload();
   };
 
@@ -71,7 +79,10 @@ const PostStats = ({
 
         {likes}
       </button>
-      <div className="flex items-center gap-1 m-2 text-2xl text-gray-400">
+      <button
+        onClick={dislikePostHandler}
+        className="flex items-center gap-1 m-2 text-2xl text-gray-400"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -88,7 +99,7 @@ const PostStats = ({
         </svg>
 
         {dislikes}
-      </div>
+      </button>
       <div className="flex items-center gap-1 m-2 text-2xl text-gray-400">
         <AiOutlineEye />
         {postViews}

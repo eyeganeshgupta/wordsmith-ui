@@ -123,6 +123,7 @@ const PostDetails = () => {
               totalReactions={totalReactions}
               reactionRatio={reactionRatio}
               createdAt={createdAt}
+              postId={post?.data?._id}
             />
           </div>
           <div className="container px-4 mx-auto">

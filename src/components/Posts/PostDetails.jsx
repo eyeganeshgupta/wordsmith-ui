@@ -6,7 +6,6 @@ import {
   fetchSinglePostAction,
 } from "../../redux/slices/posts/postsSlice";
 import Error from "../Alert/Error";
-import Loading from "../Alert/Loading";
 import PostStats from "./PostStats";
 
 const PostDetails = () => {
@@ -14,15 +13,18 @@ const PostDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { post, error, loading, success } = useSelector(
-    (state) => state?.posts
-  );
+  const { post, error, success } = useSelector((state) => state?.posts);
 
   const { userAuth } = useSelector((state) => state?.users);
 
   useEffect(() => {
     dispatch(fetchSinglePostAction(postId));
-  }, [dispatch, postId]);
+  }, [
+    dispatch,
+    postId,
+    post?.data?.likes?.length,
+    post?.data?.dislikes?.length,
+  ]);
 
   const totalReactions =
     post?.data?.likes?.length + post?.data?.dislikes?.length;
@@ -52,9 +54,7 @@ const PostDetails = () => {
 
   return (
     <>
-      {loading ? (
-        <Loading />
-      ) : error ? (
+      {error ? (
         <Error message={error?.message} />
       ) : (
         <section

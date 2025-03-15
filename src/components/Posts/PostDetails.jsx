@@ -124,6 +124,7 @@ const PostDetails = () => {
               reactionRatio={reactionRatio}
               createdAt={createdAt}
               postId={post?.data?._id}
+              claps={post?.data?.claps}
             />
           </div>
           <div className="container px-4 mx-auto">

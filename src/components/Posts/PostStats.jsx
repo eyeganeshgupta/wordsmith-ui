@@ -1,5 +1,6 @@
 import moment from "moment";
 import { AiOutlineEye } from "react-icons/ai";
+import { MdWavingHand } from "react-icons/md";
 import { RiEmotionLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import {
@@ -18,6 +19,7 @@ const PostStats = ({
   reactionRatio,
   createdAt,
   postId,
+  claps,
 }) => {
   const timeSinceCreated = moment(createdAt).fromNow();
 
@@ -100,6 +102,12 @@ const PostStats = ({
 
         {dislikes}
       </button>
+
+      <div className="flex items-center gap-1 m-2 text-2xl text-gray-400">
+        <MdWavingHand />
+        {claps}
+      </div>
+
       <div className="flex items-center gap-1 m-2 text-2xl text-gray-400">
         <AiOutlineEye />
         {postViews}

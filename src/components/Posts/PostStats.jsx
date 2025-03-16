@@ -4,6 +4,7 @@ import { MdWavingHand } from "react-icons/md";
 import { RiEmotionLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import {
+  clapPostAction,
   dislikePostAction,
   likePostAction,
 } from "../../redux/slices/posts/postsSlice";
@@ -31,6 +32,10 @@ const PostStats = ({
 
   const dislikePostHandler = () => {
     dispatch(dislikePostAction(postId));
+  };
+
+  const clapPostHandler = () => {
+    dispatch(clapPostAction(postId));
   };
 
   return (
@@ -101,7 +106,10 @@ const PostStats = ({
         {dislikes}
       </button>
 
-      <div className="flex items-center gap-1 m-2 text-2xl text-gray-400">
+      <div
+        onClick={clapPostHandler}
+        className="flex items-center gap-1 m-2 text-2xl text-gray-400"
+      >
         <MdWavingHand />
         {claps}
       </div>

@@ -184,6 +184,30 @@ export const dislikePostAction = createAsyncThunk(
   }
 );
 
+export const clapPostAction = createAsyncThunk(
+  "post/clap",
+  async (postId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${POSTS_API}/claps/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
 // Slice
 const postsSlice = createSlice({
   name: "posts",
@@ -325,6 +349,23 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(dislikePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.post = null;
+      state.loading = false;
+    });
+
+    // Clap Post
+    builder.addCase(clapPostAction.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = null;
+    });
+    builder.addCase(clapPostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(clapPostAction.rejected, (state, action) => {
       state.error = action.payload;
       state.post = null;
       state.loading = false;

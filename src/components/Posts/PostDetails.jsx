@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   deletePostAction,
   fetchSinglePostAction,
+  viewPostCountAction,
 } from "../../redux/slices/posts/postsSlice";
 import Error from "../Alert/Error";
 import PostStats from "./PostStats";
@@ -25,6 +26,10 @@ const PostDetails = () => {
     post?.data?.likes?.length,
     post?.data?.dislikes?.length,
   ]);
+
+  useEffect(() => {
+    dispatch(viewPostCountAction(postId));
+  }, [dispatch, postId]);
 
   const totalReactions =
     post?.data?.likes?.length + post?.data?.dislikes?.length;

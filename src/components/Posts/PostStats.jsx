@@ -61,7 +61,7 @@ const PostStats = ({
           />
         </svg>
 
-        {views}
+        {views?.length}
       </div>
       <button
         onClick={likePostHandler}

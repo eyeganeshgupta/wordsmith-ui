@@ -208,6 +208,30 @@ export const clapPostAction = createAsyncThunk(
   }
 );
 
+export const viewPostCountAction = createAsyncThunk(
+  "post/post-views",
+  async (postId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${POSTS_API}/${postId}/post-view-count`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || error?.message);
+    }
+  }
+);
+
 // Slice
 const postsSlice = createSlice({
   name: "posts",
@@ -366,6 +390,23 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(clapPostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.post = null;
+      state.loading = false;
+    });
+
+    // Post View Count
+    builder.addCase(viewPostCountAction.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = null;
+    });
+    builder.addCase(viewPostCountAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(viewPostCountAction.rejected, (state, action) => {
       state.error = action.payload;
       state.post = null;
       state.loading = false;

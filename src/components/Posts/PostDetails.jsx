@@ -7,6 +7,7 @@ import {
   viewPostCountAction,
 } from "../../redux/slices/posts/postsSlice";
 import Error from "../Alert/Error";
+import AddComment from "../Comments/AddComment";
 import PostStats from "./PostStats";
 
 const PostDetails = () => {
@@ -188,6 +189,7 @@ const PostDetails = () => {
               </h3>
 
               {/* Comment form */}
+              <AddComment />
             </div>
           </div>
         </section>

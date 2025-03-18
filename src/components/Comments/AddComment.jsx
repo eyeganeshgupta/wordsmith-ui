@@ -1,15 +1,22 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createComment } from "../../redux/slices/comments/commentsSlice";
 import CommentsList from "./CommentsList";
 
-const AddComment = ({ onSubmit }) => {
-  const [commentText, setCommentText] = useState("");
+const AddComment = ({ postId, comments }) => {
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!commentText.trim()) return;
-
-    onSubmit(commentText.trim());
-    setCommentText("");
+    dispatch(createComment({ ...formData, postId }));
   };
 
   return (
@@ -45,12 +52,15 @@ const AddComment = ({ onSubmit }) => {
                       rows={3}
                       className="block w-full mt-1 border-gray-300 rounded-md shadow-sm form-textarea focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                       placeholder="Your comment"
-                      defaultValue={""}
+                      value={formData.message}
+                      onChange={handleChange}
+                      name="message"
                     />
                   </div>
                   <div className="flex items-center justify-end px-3 py-2 rounded-b-lg bg-gray-50">
                     <button
                       type="submit"
+                      onClick={handleSubmit}
                       className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     >
                       Submit
@@ -63,7 +73,7 @@ const AddComment = ({ onSubmit }) => {
         </div>
       </div>
 
-      <CommentsList />
+      <CommentsList comments={comments} />
     </div>
   );
 };

@@ -59,7 +59,9 @@ const commentSlice = createSlice({
     });
     builder.addCase(createComment.fulfilled, (state, action) => {
       state.loading = false;
+      state.success = true;
       state.comment = action.payload;
+      state.error = null;
     });
     builder.addCase(createComment.rejected, (state, action) => {
       state.loading = false;

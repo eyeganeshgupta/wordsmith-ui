@@ -88,7 +88,11 @@ const PostDetails = () => {
               <h2 className="mb-4 text-3xl font-bold leading-tight tracking-tighter md:text-5xl text-darkCoolGray-900">
                 {post?.data?.title}
               </h2>
-              <div className="flex items-center justify-center -mx-2 text-left">
+
+              <Link
+                to={`/user-public-profile/${post?.data?.author?._id}`}
+                className="flex items-center justify-center -mx-2 text-left"
+              >
                 <div className="w-auto px-2">
                   <img
                     className="w-12 h-12 rounded-full"
@@ -101,7 +105,7 @@ const PostDetails = () => {
                     {post?.data?.author?.username}
                   </h4>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
           <img

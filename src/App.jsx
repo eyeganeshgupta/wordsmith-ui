@@ -9,7 +9,7 @@ import PostDetails from "./components/Posts/PostDetails";
 import PostLists from "./components/Posts/PostLists";
 import UpdatePost from "./components/Posts/UpdatePost";
 import Login from "./components/Users/Login";
-import UserProfile from "./components/Users/UserProfile";
+import PublicUserProfile from "./components/Users/PublicUserProfile";
 
 function App() {
   const { userAuth } = useSelector((state) => state?.users);
@@ -24,10 +24,10 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route
-          path="/user-profile"
+          path="/user-public-profile/:userId"
           element={
             <ProtectedRoute>
-              <UserProfile />
+              <PublicUserProfile />
             </ProtectedRoute>
           }
         />

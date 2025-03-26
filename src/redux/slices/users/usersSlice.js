@@ -94,6 +94,24 @@ export const userPrivateProfileAction = createAsyncThunk(
   }
 );
 
+export const userPrivateProfileAction = createAsyncThunk(
+  "users/user-private-profile",
+  async (userId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(`${USERS_API}/profile/`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",
@@ -145,6 +163,22 @@ const usersSlice = createSlice({
     });
 
     builder.addCase(userPublicProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(userPrivateProfileAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(userPrivateProfileAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(userPrivateProfileAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

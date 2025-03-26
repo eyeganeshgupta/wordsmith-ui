@@ -94,24 +94,6 @@ export const userPrivateProfileAction = createAsyncThunk(
   }
 );
 
-export const userPrivateProfileAction = createAsyncThunk(
-  "users/user-private-profile",
-  async (userId, { rejectWithValue, getState }) => {
-    try {
-      const token = getState().users?.userAuth?.userInfo?.token;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const { data } = await axios.get(`${USERS_API}/profile/`, config);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
 // ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",

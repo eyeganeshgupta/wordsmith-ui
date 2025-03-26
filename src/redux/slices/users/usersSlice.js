@@ -55,6 +55,45 @@ export const registerAction = createAsyncThunk(
   }
 );
 
+export const userPublicProfileAction = createAsyncThunk(
+  "users/user-public-profile",
+  async (userId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `${USERS_API}/public-profile/${userId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const userPrivateProfileAction = createAsyncThunk(
+  "users/user-private-profile",
+  async (userId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(`${USERS_API}/profile/`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",
@@ -91,6 +130,22 @@ const usersSlice = createSlice({
     builder.addCase(registerAction.rejected, (state, action) => {
       state.error = action.payload;
       state.user = null;
+      state.loading = false;
+    });
+
+    builder.addCase(userPublicProfileAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(userPublicProfileAction.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(userPublicProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
       state.loading = false;
     });
 

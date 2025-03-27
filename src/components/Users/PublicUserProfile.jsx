@@ -1,27 +1,21 @@
+import { useEffect } from "react";
 import { FiUpload } from "react-icons/fi";
-
-const profile = {
-  name: "Ganesh Gupta",
-  imageUrl: "https://avatars.githubusercontent.com/u/121616032?v=4",
-  coverImageUrl:
-    "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  about: `
-    <p>👨‍💻 I'm Full-stack Java && JavaScript Developer with a love for crafting clean and efficient code.</p>
-    <p>🌐 Building web applications that not only solve problems but also delight users.</p>
-  `,
-  fields: {
-    Phone: "+91 89839 71752",
-    Email: "eyeganeshgupta@gmail.com",
-    Title: "Full Stack Web Developer",
-    Team: "Product Development",
-    Location: "Mumbai",
-    Sits: "Royal, 4th floor",
-    Salary: "3,60,000 ₹",
-    Birthday: "February 18, 2003",
-  },
-};
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { userPublicProfileAction } from "../../redux/slices/users/usersSlice";
 
 export default function PublicUserProfile() {
+  const { userId } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(userPublicProfileAction(userId));
+  }, [userId, dispatch]);
+
+  const { loading, user, error } = useSelector((state) => state?.users);
+
+  console.log(user);
+
   return (
     <>
       <div className="flex h-full">
@@ -50,8 +44,8 @@ export default function PublicUserProfile() {
                       <div className="relative flex">
                         <img
                           className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src="https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-                          alt=""
+                          src={user?.data?.profilePicture}
+                          alt="profile picture"
                         />
                         <button
                           className="absolute bottom-0 right-0 mb-4 mr-4 p-2 rounded-full bg-white hover:bg-gray-200"
@@ -64,7 +58,7 @@ export default function PublicUserProfile() {
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
                           <h1 className="truncate text-2xl font-bold text-gray-900">
-                            {profile?.name}
+                            {user?.data?.username}
                           </h1>
                         </div>
                       </div>
@@ -184,7 +178,7 @@ export default function PublicUserProfile() {
                     </div>
                     <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
                       <h1 className="truncate text-2xl font-bold text-gray-900">
-                        {profile?.name}
+                        {user?.data?.username}
                       </h1>
                     </div>
                   </div>
@@ -196,29 +190,11 @@ export default function PublicUserProfile() {
                       <dt className="text-sm font-medium text-gray-500">
                         Email
                       </dt>
-                      <dd className="mt-1 text-sm text-gray-900">Some Email</dd>
-                    </div>
-
-                    <div className="sm:col-span-1">
-                      <dt className="text-sm font-medium text-gray-500">
-                        Username
-                      </dt>
                       <dd className="mt-1 text-sm text-gray-900">
-                        Some Username
+                        {user?.data?.email}
                       </dd>
                     </div>
                   </dl>
-
-                  <div className="mt-8">
-                    <div className="flex space-x-6">
-                      <h2 className="text-sm font-medium text-gray-500">
-                        About
-                      </h2>
-                    </div>
-                    <div className="mt-5 text-sm text-gray-700">
-                      {profile?.about}
-                    </div>
-                  </div>
                 </div>
               </article>
             </main>

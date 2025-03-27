@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
+import { fetchAllCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 import { fetchPrivatePostsAction } from "../../redux/slices/posts/postsSlice";
 import truncatePost from "../../utils/truncatePost";
 import Loading from "../Alert/Loading";
@@ -26,7 +26,7 @@ const PostLists = () => {
   // dispatch fetching posts
   useEffect(() => {
     dispatch(fetchPrivatePostsAction({ page, limit: 4, searchTerm, category }));
-    dispatch(fetchCategoriesAction());
+    dispatch(fetchAllCategoriesAction());
   }, [dispatch, page, searchTerm, category]);
 
   const { categories } = useSelector((state) => state?.categories);

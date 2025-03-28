@@ -3,6 +3,7 @@ import { FiUpload } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { userPublicProfileAction } from "../../redux/slices/users/usersSlice";
+import UserPosts from "./UserPosts";
 
 export default function PublicUserProfile() {
   const { userId } = useParams();
@@ -201,6 +202,8 @@ export default function PublicUserProfile() {
           </div>
         </div>
       </div>
+      {/* User Posts */}
+      <UserPosts posts={user?.data?.posts} />
     </>
   );
 }

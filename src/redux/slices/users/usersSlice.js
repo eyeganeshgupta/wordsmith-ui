@@ -98,6 +98,28 @@ export const blockUserAction = createAsyncThunk(
   }
 );
 
+export const unblockUserAction = createAsyncThunk(
+  "users/unblock-user",
+  async (userId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${USERS_API}/unblock/${userId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 export const userPrivateProfileAction = createAsyncThunk(
   "users/user-private-profile",
   async (userId, { rejectWithValue, getState }) => {
@@ -183,6 +205,22 @@ const usersSlice = createSlice({
     });
 
     builder.addCase(blockUserAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(unblockUserAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(unblockUserAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(unblockUserAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

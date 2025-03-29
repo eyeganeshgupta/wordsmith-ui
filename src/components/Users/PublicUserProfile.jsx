@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   blockUserAction,
+  unblockUserAction,
   userPublicProfileAction,
 } from "../../redux/slices/users/usersSlice";
 import UserPosts from "./UserPosts";
@@ -20,6 +21,10 @@ export default function PublicUserProfile() {
 
   const blockUserHandler = () => {
     dispatch(blockUserAction(userId));
+  };
+
+  const unblockUserHandler = () => {
+    dispatch(unblockUserAction(userId));
   };
 
   console.log(user);
@@ -100,6 +105,7 @@ export default function PublicUserProfile() {
                         {/* unblock */}
                         <button
                           type="button"
+                          onClick={unblockUserHandler}
                           className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
                           <svg

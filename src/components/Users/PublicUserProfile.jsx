@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { FiUpload } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { userPublicProfileAction } from "../../redux/slices/users/usersSlice";
+import {
+  blockUserAction,
+  userPublicProfileAction,
+} from "../../redux/slices/users/usersSlice";
 import UserPosts from "./UserPosts";
 
 export default function PublicUserProfile() {
@@ -14,6 +17,10 @@ export default function PublicUserProfile() {
   }, [userId, dispatch]);
 
   const { loading, user, error } = useSelector((state) => state?.users);
+
+  const blockUserHandler = () => {
+    dispatch(blockUserAction(userId));
+  };
 
   console.log(user);
 
@@ -114,6 +121,7 @@ export default function PublicUserProfile() {
                         {/* Block */}
                         <button
                           type="button"
+                          onClick={blockUserHandler}
                           className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         >
                           <svg

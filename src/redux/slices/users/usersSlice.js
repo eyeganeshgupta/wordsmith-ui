@@ -76,6 +76,28 @@ export const userPublicProfileAction = createAsyncThunk(
   }
 );
 
+export const blockUserAction = createAsyncThunk(
+  "users/block-user",
+  async (userId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${USERS_API}/block/${userId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 export const userPrivateProfileAction = createAsyncThunk(
   "users/user-private-profile",
   async (userId, { rejectWithValue, getState }) => {
@@ -145,6 +167,22 @@ const usersSlice = createSlice({
     });
 
     builder.addCase(userPublicProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(blockUserAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(blockUserAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(blockUserAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

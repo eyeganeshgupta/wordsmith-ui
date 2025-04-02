@@ -18,11 +18,21 @@ export default function PublicUserProfile() {
     dispatch(userPublicProfileAction(userId));
   }, [userId, dispatch]);
 
+  const { loading, user, profile, error } = useSelector(
+    (state) => state?.users
+  );
+
+  console.log(profile);
+
+  const blockedUsers = profile?.data?.user?.blockedUsers;
+
+  const hasBlocked = blockedUsers?.some((user) => user?._id === userId);
+
+  console.log(hasBlocked);
+
   useEffect(() => {
     dispatch(userPrivateProfileAction());
-  }, [userId, dispatch]);
-
-  const { loading, user, error } = useSelector((state) => state?.users);
+  }, [userId, dispatch, hasBlocked]);
 
   const blockUserHandler = () => {
     dispatch(blockUserAction(userId));
@@ -107,50 +117,53 @@ export default function PublicUserProfile() {
                           </svg>
                           20
                         </button>
-                        {/* unblock */}
-                        <button
-                          type="button"
-                          onClick={unblockUserHandler}
-                          className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        >
-                          <svg
-                            className="-ml-0.5 h-6 w-6 text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
+
+                        {/* unblock/block */}
+                        {hasBlocked ? (
+                          <button
+                            type="button"
+                            onClick={unblockUserHandler}
+                            className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                            />
-                          </svg>
-                          Unblock
-                        </button>
-                        {/* Block */}
-                        <button
-                          type="button"
-                          onClick={blockUserHandler}
-                          className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        >
-                          <svg
-                            className="-ml-0.5 h-6 w-6 text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
+                            <svg
+                              className="-ml-0.5 h-6 w-6 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+                              />
+                            </svg>
+                            Unblock
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={blockUserHandler}
+                            className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                            />
-                          </svg>
-                          Block
-                        </button>
+                            <svg
+                              className="-ml-0.5 h-6 w-6 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+                              />
+                            </svg>
+                            Block
+                          </button>
+                        )}
 
                         {/* follow */}
                         <button

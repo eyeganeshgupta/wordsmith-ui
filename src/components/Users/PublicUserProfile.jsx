@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import {
   blockUserAction,
   unblockUserAction,
+  userPrivateProfileAction,
   userPublicProfileAction,
 } from "../../redux/slices/users/usersSlice";
 import UserPosts from "./UserPosts";
@@ -15,6 +16,10 @@ export default function PublicUserProfile() {
 
   useEffect(() => {
     dispatch(userPublicProfileAction(userId));
+  }, [userId, dispatch]);
+
+  useEffect(() => {
+    dispatch(userPrivateProfileAction());
   }, [userId, dispatch]);
 
   const { loading, user, error } = useSelector((state) => state?.users);

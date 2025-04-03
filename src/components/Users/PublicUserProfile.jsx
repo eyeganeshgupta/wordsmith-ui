@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   blockUserAction,
+  followUserAction,
   unblockUserAction,
+  unfollowUserAction,
   userPrivateProfileAction,
   userPublicProfileAction,
 } from "../../redux/slices/users/usersSlice";
@@ -22,17 +24,19 @@ export default function PublicUserProfile() {
     (state) => state?.users
   );
 
-  console.log(profile);
-
   const blockedUsers = profile?.data?.user?.blockedUsers;
 
   const hasBlocked = blockedUsers?.some((user) => user?._id === userId);
+
+  const followedUsers = profile?.data?.user?.following;
+
+  const hasFollowed = followedUsers?.some((user) => user?._id === userId);
 
   console.log(hasBlocked);
 
   useEffect(() => {
     dispatch(userPrivateProfileAction());
-  }, [userId, dispatch, hasBlocked]);
+  }, [userId, dispatch, hasBlocked, hasFollowed]);
 
   const blockUserHandler = () => {
     dispatch(blockUserAction(userId));
@@ -40,6 +44,14 @@ export default function PublicUserProfile() {
 
   const unblockUserHandler = () => {
     dispatch(unblockUserAction(userId));
+  };
+
+  const followUserHandler = () => {
+    dispatch(followUserAction(userId));
+  };
+
+  const unfollowUserHandler = () => {
+    dispatch(unfollowUserAction(userId));
   };
 
   console.log(user);
@@ -165,48 +177,52 @@ export default function PublicUserProfile() {
                           </button>
                         )}
 
-                        {/* follow */}
-                        <button
-                          type="button"
-                          className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        >
-                          <svg
-                            className="-ml-0.5 h-6 w-6 text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
+                        {/* follow / unfollow */}
+                        {hasFollowed ? (
+                          <button
+                            type="button"
+                            onClick={followUserHandler}
+                            className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
-                            />
-                          </svg>
-                          Follow
-                        </button>
-                        {/* unfollow */}
-                        <button
-                          type="button"
-                          className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        >
-                          <svg
-                            className="-ml-0.5 h-6 w-6 text-gray-400"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
+                            <svg
+                              className="-ml-0.5 h-6 w-6 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
+                              />
+                            </svg>
+                            Follow
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={unfollowUserHandler}
+                            className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
-                            />
-                          </svg>
-                          Follow
-                        </button>
+                            <svg
+                              className="-ml-0.5 h-6 w-6 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
+                              />
+                            </svg>
+                            Follow
+                          </button>
+                        )}
                       </div>
                     </div>
                     <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">

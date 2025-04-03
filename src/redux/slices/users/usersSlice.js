@@ -138,6 +138,50 @@ export const userPrivateProfileAction = createAsyncThunk(
   }
 );
 
+export const followUserAction = createAsyncThunk(
+  "users/follow-user",
+  async (userId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${USERS_API}/following/${userId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const unfollowUserAction = createAsyncThunk(
+  "users/unfollow-user",
+  async (userId, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${USERS_API}/unfollowing/${userId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",
@@ -239,6 +283,38 @@ const usersSlice = createSlice({
     builder.addCase(userPrivateProfileAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
+    });
+
+    builder.addCase(followUserAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(followUserAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(followUserAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(unfollowUserAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(unfollowUserAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(unfollowUserAction.pending, (state) => {
+      state.loading = true;
     });
 
     builder.addCase(resetSuccessAction.fulfilled, (state) => {

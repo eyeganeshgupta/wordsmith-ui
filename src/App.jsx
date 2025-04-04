@@ -9,6 +9,7 @@ import PostDetails from "./components/Posts/PostDetails";
 import PostLists from "./components/Posts/PostLists";
 import UpdatePost from "./components/Posts/UpdatePost";
 import Login from "./components/Users/Login";
+import PrivateUserProfile from "./components/Users/PrivateUserProfile";
 import PublicUserProfile from "./components/Users/PublicUserProfile";
 
 function App() {
@@ -28,6 +29,15 @@ function App() {
           element={
             <ProtectedRoute>
               <PublicUserProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/user-profile"
+          element={
+            <ProtectedRoute>
+              <PrivateUserProfile />
             </ProtectedRoute>
           }
         />

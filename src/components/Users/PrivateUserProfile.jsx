@@ -2,27 +2,8 @@ import { useEffect } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { userPrivateProfileAction } from "../../redux/slices/users/usersSlice";
-
-const profile = {
-  name: "Ganesh Gupta",
-  imageUrl: "https://avatars.githubusercontent.com/u/121616032?v=4",
-  coverImageUrl:
-    "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  about: `
-      <p>👨‍💻 I'm Full-stack Java && JavaScript Developer with a love for crafting clean and efficient code.</p>
-      <p>🌐 Building web applications that not only solve problems but also delight users.</p>
-    `,
-  fields: {
-    Phone: "+91 89839 71752",
-    Email: "eyeganeshgupta@gmail.com",
-    Title: "Full Stack Web Developer",
-    Team: "Product Development",
-    Location: "Mumbai",
-    Sits: "Royal, 4th floor",
-    Salary: "3,60,000 ₹",
-    Birthday: "February 18, 2003",
-  },
-};
+import Followers from "./Followers";
+import UserPosts from "./UserPosts";
 
 export default function PrivateUserProfile() {
   const dispatch = useDispatch();
@@ -161,12 +142,13 @@ export default function PrivateUserProfile() {
                     </div>
                   </dl>
                 </div>
-                {/* Posts Lists */}
                 {/* <UserPosts /> */}
+                <UserPosts posts={profile?.data?.user?.posts} />
+
                 {/* Followers */}
-                {/* <Followers /> */}
+                <Followers followers={profile?.data?.user?.followers} />
+
                 {/* Followed Users */}
-                {/* <UsersLists /> */}
               </article>
             </main>
           </div>

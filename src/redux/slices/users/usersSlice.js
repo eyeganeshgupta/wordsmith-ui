@@ -206,6 +206,31 @@ export const uploadProfilePictureAction = createAsyncThunk(
   }
 );
 
+export const uploadCoverImageAction = createAsyncThunk(
+  "users/upload-cover-image",
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", payload?.image);
+
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${USERS_API}/cover-image`,
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice with reducers for handling actions
 const usersSlice = createSlice({
   name: "users",
@@ -354,6 +379,21 @@ const usersSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
       state.isProfileImgUploaded = false;
+    });
+
+    builder.addCase(uploadCoverImageAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(uploadCoverImageAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.isCoverImageUploaded = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(uploadCoverImageAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+      state.isCoverImageUploaded = false;
     });
 
     builder.addCase(resetSuccessAction.fulfilled, (state) => {

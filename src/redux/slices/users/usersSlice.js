@@ -2,9 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { resetErrorAction, resetSuccessAction } from "../global/globalSlice";
 
+// API base URL and endpoints for users
 const API_BASE_URL = "http://localhost:8087/api/v1";
 const USERS_API = `${API_BASE_URL}/users`;
 
+// Initial state of the users slice
 const INITIAL_STATE = {
   loading: false,
   error: null,
@@ -27,7 +29,7 @@ export const loginAction = createAsyncThunk(
     try {
       const { data } = await axios.post(`${USERS_API}/login`, credentials);
 
-      // * Saving the user into localStorage
+      // * Saving the user info to localStorage
       localStorage.setItem("userInfo", JSON.stringify(data));
 
       return data;
@@ -37,6 +39,7 @@ export const loginAction = createAsyncThunk(
   }
 );
 
+// Async thunk action for user logout
 export const logoutAction = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("userInfo");
   return true;
@@ -55,6 +58,7 @@ export const registerAction = createAsyncThunk(
   }
 );
 
+// ! Fetching the public profile of a user
 export const userPublicProfileAction = createAsyncThunk(
   "users/user-public-profile",
   async (userId, { rejectWithValue, getState }) => {
@@ -76,6 +80,7 @@ export const userPublicProfileAction = createAsyncThunk(
   }
 );
 
+// ! Block a user action
 export const blockUserAction = createAsyncThunk(
   "users/block-user",
   async (userId, { rejectWithValue, getState }) => {
@@ -98,6 +103,7 @@ export const blockUserAction = createAsyncThunk(
   }
 );
 
+// ! Unblock a user action
 export const unblockUserAction = createAsyncThunk(
   "users/unblock-user",
   async (userId, { rejectWithValue, getState }) => {
@@ -120,6 +126,7 @@ export const unblockUserAction = createAsyncThunk(
   }
 );
 
+// ! Fetch the private profile of a user
 export const userPrivateProfileAction = createAsyncThunk(
   "users/user-private-profile",
   async (userId, { rejectWithValue, getState }) => {
@@ -138,6 +145,7 @@ export const userPrivateProfileAction = createAsyncThunk(
   }
 );
 
+// ! Follow a user action
 export const followUserAction = createAsyncThunk(
   "users/follow-user",
   async (userId, { rejectWithValue, getState }) => {
@@ -160,6 +168,7 @@ export const followUserAction = createAsyncThunk(
   }
 );
 
+// ! Unfollow a user action
 export const unfollowUserAction = createAsyncThunk(
   "users/unfollow-user",
   async (userId, { rejectWithValue, getState }) => {
@@ -182,6 +191,7 @@ export const unfollowUserAction = createAsyncThunk(
   }
 );
 
+// ! Upload profile picture action
 export const uploadProfilePictureAction = createAsyncThunk(
   "users/upload-profile-image",
   async (payload, { rejectWithValue, getState }) => {
@@ -206,6 +216,7 @@ export const uploadProfilePictureAction = createAsyncThunk(
   }
 );
 
+// ! Upload cover image action
 export const uploadCoverImageAction = createAsyncThunk(
   "users/upload-cover-image",
   async (payload, { rejectWithValue, getState }) => {
@@ -231,11 +242,12 @@ export const uploadCoverImageAction = createAsyncThunk(
   }
 );
 
-// ! Users slice with reducers for handling actions
+// ! Users slice for handling actions like login, registration, profile updates, etc.
 const usersSlice = createSlice({
   name: "users",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
+    // Handling login actions
     builder.addCase(loginAction.pending, (state) => {
       state.loading = true;
     });
@@ -253,6 +265,7 @@ const usersSlice = createSlice({
       state.loading = false;
     });
 
+    // Handling register actions
     builder.addCase(registerAction.pending, (state) => {
       state.loading = true;
     });
@@ -270,6 +283,7 @@ const usersSlice = createSlice({
       state.loading = false;
     });
 
+    // Handling public profile fetch actions
     builder.addCase(userPublicProfileAction.pending, (state) => {
       state.loading = true;
     });
@@ -286,6 +300,7 @@ const usersSlice = createSlice({
       state.loading = false;
     });
 
+    // Handling block user action
     builder.addCase(blockUserAction.pending, (state) => {
       state.loading = true;
     });
@@ -302,6 +317,7 @@ const usersSlice = createSlice({
       state.loading = false;
     });
 
+    // Handling unblock user action
     builder.addCase(unblockUserAction.pending, (state) => {
       state.loading = true;
     });
@@ -318,6 +334,7 @@ const usersSlice = createSlice({
       state.loading = false;
     });
 
+    // Handling profile updates like follow/unfollow, and image uploads
     builder.addCase(userPrivateProfileAction.pending, (state) => {
       state.loading = true;
     });
@@ -369,12 +386,14 @@ const usersSlice = createSlice({
     builder.addCase(uploadProfilePictureAction.pending, (state) => {
       state.loading = true;
     });
+
     builder.addCase(uploadProfilePictureAction.fulfilled, (state, action) => {
       state.profile = action.payload;
       state.isProfileImgUploaded = true;
       state.loading = false;
       state.error = null;
     });
+
     builder.addCase(uploadProfilePictureAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
@@ -384,18 +403,21 @@ const usersSlice = createSlice({
     builder.addCase(uploadCoverImageAction.pending, (state) => {
       state.loading = true;
     });
+
     builder.addCase(uploadCoverImageAction.fulfilled, (state, action) => {
       state.profile = action.payload;
       state.isCoverImageUploaded = true;
       state.loading = false;
       state.error = null;
     });
+
     builder.addCase(uploadCoverImageAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
       state.isCoverImageUploaded = false;
     });
 
+    // Resetting success and error states
     builder.addCase(resetSuccessAction.fulfilled, (state) => {
       state.success = false;
     });

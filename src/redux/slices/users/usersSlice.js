@@ -13,6 +13,8 @@ const INITIAL_STATE = {
   success: false,
   user: null,
   users: [],
+  isCoverImageUploaded: false,
+  isProfileImgUploaded: false,
   profile: {},
   userAuth: {
     error: null,

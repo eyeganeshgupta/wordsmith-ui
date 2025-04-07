@@ -11,6 +11,7 @@ import UpdatePost from "./components/Posts/UpdatePost";
 import Login from "./components/Users/Login";
 import PrivateUserProfile from "./components/Users/PrivateUserProfile";
 import PublicUserProfile from "./components/Users/PublicUserProfile";
+import UploadProfileImage from "./components/Users/UploadProfileImage";
 
 function App() {
   const { userAuth } = useSelector((state) => state?.users);
@@ -41,6 +42,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/upload-profile-image"
+          element={
+            <ProtectedRoute>
+              <UploadProfileImage />
+            </ProtectedRoute>
+          }
+        ></Route>
 
         <Route
           path="/add-post"

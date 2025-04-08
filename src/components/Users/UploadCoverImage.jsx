@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadProfilePictureAction } from "../../redux/slices/users/usersSlice";
+import { uploadCoverImageAction } from "../../redux/slices/users/usersSlice";
 import Error from "../Alert/Error";
 import Loading from "../Alert/Loading";
 import Success from "../Alert/Success";
 
-const UploadProfileImage = () => {
+const UploadCoverImage = () => {
   const dispatch = useDispatch();
 
   const [errors, setErrors] = useState({});
@@ -16,7 +16,7 @@ const UploadProfileImage = () => {
     image: null,
   });
 
-  const { isProfileImgUploaded, loading, error } = useSelector(
+  const { isCoverImageUploaded, loading, error } = useSelector(
     (state) => state?.users
   );
 
@@ -42,10 +42,10 @@ const UploadProfileImage = () => {
     e.preventDefault();
 
     const errors = validateForm(formData);
-    setErrors(errors);
 
+    setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      dispatch(uploadProfilePictureAction(formData));
+      dispatch(uploadCoverImageAction(formData));
       e.preventDefault();
     }
   };
@@ -55,16 +55,16 @@ const UploadProfileImage = () => {
       <form onSubmit={handleSubmit} className="w-full lg:w-1/2">
         <div className="flex flex-col items-center p-10 xl:px-24 xl:pb-12 bg-white lg:max-w-xl lg:ml-auto rounded-4xl shadow-2xl">
           <h2 className="mb-4 text-2xl md:text-3xl text-coolGray-900 font-bold text-center">
-            Upload Profile Image
+            Upload Cover Image
           </h2>
 
           {/* error */}
           {error && <Error message={error?.message} />}
-          {isProfileImgUploaded && (
+          {isCoverImageUploaded && (
             <Success message="Image uploaded successfully" />
           )}
           <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
-            Upload or update Profile Image
+            Upload or update Cover Image
           </h3>
 
           <label className="mb-4 flex flex-col w-full">
@@ -76,6 +76,7 @@ const UploadProfileImage = () => {
               onChange={handleFileChange}
               onBlur={handleBlur}
             />
+
             {/* error here */}
             {errors?.image && <p className="text-red-500 ">{errors.image}</p>}
           </label>
@@ -97,4 +98,4 @@ const UploadProfileImage = () => {
   );
 };
 
-export default UploadProfileImage;
+export default UploadCoverImage;

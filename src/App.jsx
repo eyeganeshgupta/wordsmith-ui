@@ -11,6 +11,7 @@ import UpdatePost from "./components/Posts/UpdatePost";
 import Login from "./components/Users/Login";
 import PrivateUserProfile from "./components/Users/PrivateUserProfile";
 import PublicUserProfile from "./components/Users/PublicUserProfile";
+import UploadCoverImage from "./components/Users/UploadCoverImage";
 import UploadProfileImage from "./components/Users/UploadProfileImage";
 
 function App() {
@@ -48,6 +49,15 @@ function App() {
           element={
             <ProtectedRoute>
               <UploadProfileImage />
+            </ProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/upload-cover-image"
+          element={
+            <ProtectedRoute>
+              <UploadCoverImage />
             </ProtectedRoute>
           }
         ></Route>

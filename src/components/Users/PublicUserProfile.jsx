@@ -68,8 +68,8 @@ export default function PublicUserProfile() {
                   <div className="relative">
                     <img
                       className="h-32 w-full object-cover lg:h-48"
-                      src="https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-                      alt=""
+                      src={user?.data?.coverImage}
+                      alt={user?.data?.username}
                     />
                     <button
                       className="absolute top-0 right-0 m-4 p-2 rounded-full bg-white hover:bg-gray-200"
@@ -85,7 +85,7 @@ export default function PublicUserProfile() {
                         <img
                           className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
                           src={user?.data?.profilePicture}
-                          alt="profile picture"
+                          alt={user?.data?.username}
                         />
                         <button
                           className="absolute bottom-0 right-0 mb-4 mr-4 p-2 rounded-full bg-white hover:bg-gray-200"

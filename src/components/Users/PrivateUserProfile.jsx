@@ -2,7 +2,10 @@ import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { useEffect } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { userPrivateProfileAction } from "../../redux/slices/users/usersSlice";
+import {
+  sendAccountVerificationEmailAction,
+  userPrivateProfileAction,
+} from "../../redux/slices/users/usersSlice";
 import Followers from "./Followers";
 import UserPosts from "./UserPosts";
 
@@ -16,6 +19,10 @@ export default function PrivateUserProfile() {
   const { loading, user, profile, userAuth, error } = useSelector(
     (state) => state?.users
   );
+
+  const sendAccountVerificationEmailHandler = () => {
+    dispatch(sendAccountVerificationEmailAction());
+  };
 
   return (
     <>
@@ -69,7 +76,10 @@ export default function PrivateUserProfile() {
 
                         {/* Account verification warning */}
                         {!userAuth?.userInfo?.isVerified && (
-                          <button className="rounded-md mt-6 bg-yellow-50 p-4">
+                          <button
+                            className="rounded-md mt-6 bg-yellow-50 p-4"
+                            onClick={sendAccountVerificationEmailHandler}
+                          >
                             <div className="flex">
                               <div className="flex-shrink-0">
                                 <ExclamationTriangleIcon

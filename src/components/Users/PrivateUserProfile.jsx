@@ -6,6 +6,7 @@ import {
   sendAccountVerificationEmailAction,
   userPrivateProfileAction,
 } from "../../redux/slices/users/usersSlice";
+import Success from "../Alert/Success";
 import Followers from "./Followers";
 import UserPosts from "./UserPosts";
 
@@ -16,7 +17,7 @@ export default function PrivateUserProfile() {
     dispatch(userPrivateProfileAction());
   }, [dispatch]);
 
-  const { loading, user, profile, userAuth, error } = useSelector(
+  const { loading, user, profile, userAuth, isEmailSent, error } = useSelector(
     (state) => state?.users
   );
 
@@ -26,6 +27,9 @@ export default function PrivateUserProfile() {
 
   return (
     <>
+      {/* Email send success message */}
+      {isEmailSent && <Success message="Email successfully sent" />}
+
       <div className="flex h-full">
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
           <div className="relative z-0 flex flex-1 overflow-hidden">

@@ -8,6 +8,7 @@ import AddPost from "./components/Posts/AddPost";
 import PostDetails from "./components/Posts/PostDetails";
 import PostLists from "./components/Posts/PostLists";
 import UpdatePost from "./components/Posts/UpdatePost";
+import AccountVerification from "./components/Users/AccountVerification";
 import Login from "./components/Users/Login";
 import PrivateUserProfile from "./components/Users/PrivateUserProfile";
 import PublicUserProfile from "./components/Users/PublicUserProfile";
@@ -40,6 +41,15 @@ function App() {
           element={
             <ProtectedRoute>
               <PrivateUserProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/verify-account/:token"
+          element={
+            <ProtectedRoute>
+              <AccountVerification />
             </ProtectedRoute>
           }
         />

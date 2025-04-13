@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   isCoverImageUploaded: false,
   isProfileImgUploaded: false,
   isEmailSent: false,
+  isVerified: false,
   profile: {},
   userAuth: {
     error: null,
@@ -267,6 +268,27 @@ export const sendAccountVerificationEmailAction = createAsyncThunk(
   }
 );
 
+export const verifyAccountAction = createAsyncThunk(
+  "users/verify-account",
+  async (verifyToken, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `${USERS_API}/account-verification/${verifyToken}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice for handling actions like login, registration, profile updates, etc.
 const usersSlice = createSlice({
   name: "users",
@@ -459,6 +481,21 @@ const usersSlice = createSlice({
         state.loading = false;
       }
     );
+
+    builder.addCase(verifyAccountAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(verifyAccountAction.fulfilled, (state) => {
+      state.isVerified = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(verifyAccountAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
 
     // Resetting success and error states
     builder.addCase(resetSuccessAction.fulfilled, (state) => {

@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   isProfileImgUploaded: false,
   isEmailSent: false,
   isVerified: false,
+  emailMessage: undefined,
   profile: {},
   userAuth: {
     error: null,
@@ -289,6 +290,22 @@ export const verifyAccountAction = createAsyncThunk(
   }
 );
 
+export const forgotPasswordAction = createAsyncThunk(
+  "users/forgot-password",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${USERS_API}/forgot-password`,
+        payload
+      );
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice for handling actions like login, registration, profile updates, etc.
 const usersSlice = createSlice({
   name: "users",
@@ -493,6 +510,23 @@ const usersSlice = createSlice({
     });
 
     builder.addCase(verifyAccountAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(forgotPasswordAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    builder.addCase(forgotPasswordAction.fulfilled, (state, action) => {
+      state.isEmailSent = true;
+      state.emailMessage = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(forgotPasswordAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

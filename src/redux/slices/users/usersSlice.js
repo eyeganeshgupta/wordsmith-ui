@@ -298,6 +298,9 @@ export const forgotPasswordAction = createAsyncThunk(
         `${USERS_API}/forgot-password`,
         payload
       );
+
+      console.log(data);
+
       localStorage.setItem("userInfo", JSON.stringify(data));
       return data;
     } catch (error) {
@@ -514,7 +517,7 @@ const usersSlice = createSlice({
       state.loading = false;
     });
 
-    builder.addCase(forgotPasswordAction.pending, (state, action) => {
+    builder.addCase(forgotPasswordAction.pending, (state) => {
       state.loading = true;
     });
 

@@ -1,8 +1,40 @@
+import { useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPasswordAction } from "../../redux/slices/users/usersSlices";
+import LoadingComponent from "../Alert/LoadingComponent";
 
 const PasswordResetRequest = () => {
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    email: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      forgotPasswordAction({
+        email: formData.email,
+      })
+    );
+    setFormData({
+      email: "",
+    });
+  };
+
+  const { loading, error, isEmailSent, emailMessage } = useSelector(
+    (state) => state?.users
+  );
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-50"
+    >
       <div className="w-96 p-6 bg-white rounded-xl shadow-md">
         <h1 className="text-3xl font-bold text-gray-700 text-center mb-6">
           Reset your password
@@ -11,19 +43,35 @@ const PasswordResetRequest = () => {
           Enter your email address and we&apos;ll send you a link to reset your
           password.
         </p>
+        {error && (
+          <p className="text-red-600 text-center mb-6">{error?.message}</p>
+        )}
+        {/* show success message */}
+        {isEmailSent && (
+          <p className="text-green-600 text-center mb-6">
+            {emailMessage?.message}
+          </p>
+        )}
         <div className="mb-6 relative">
           <AiOutlineMail className="absolute text-gray-500 text-2xl top-2 left-2" />
           <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             type="email"
             placeholder="Enter your email"
             className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
           />
         </div>
-        <button className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
-          Send reset link
-        </button>
+        {loading ? (
+          <LoadingComponent />
+        ) : (
+          <button className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
+            Send reset link
+          </button>
+        )}
       </div>
-    </div>
+    </form>
   );
 };
 

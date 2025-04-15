@@ -10,6 +10,7 @@ import PostLists from "./components/Posts/PostLists";
 import UpdatePost from "./components/Posts/UpdatePost";
 import AccountVerification from "./components/Users/AccountVerification";
 import Login from "./components/Users/Login";
+import { PasswordReset } from "./components/Users/PasswordReset";
 import PasswordResetRequest from "./components/Users/PasswordResetRequest";
 import PrivateUserProfile from "./components/Users/PrivateUserProfile";
 import PublicUserProfile from "./components/Users/PublicUserProfile";
@@ -110,6 +111,8 @@ function App() {
         />
 
         <Route path="/forgot-password" element={<PasswordResetRequest />} />
+
+        <Route path="/reset-password/:token" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   );

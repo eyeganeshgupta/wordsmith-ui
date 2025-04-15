@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordAction } from "../../redux/slices/users/usersSlices";
-import LoadingComponent from "../Alert/LoadingComponent";
+import Loading from "../Alert/Loading";
 
 const PasswordResetRequest = () => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const PasswordResetRequest = () => {
           />
         </div>
         {loading ? (
-          <LoadingComponent />
+          <Loading />
         ) : (
           <button className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
             Send reset link

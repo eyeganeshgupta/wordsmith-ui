@@ -309,6 +309,24 @@ export const forgotPasswordAction = createAsyncThunk(
   }
 );
 
+export const passwordResetAction = createAsyncThunk(
+  "users/password-reset",
+  async ({ resetToken, password }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${USERS_API}/reset-password/${resetToken}`,
+        {
+          password,
+        }
+      );
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice for handling actions like login, registration, profile updates, etc.
 const usersSlice = createSlice({
   name: "users",
@@ -530,6 +548,22 @@ const usersSlice = createSlice({
     });
 
     builder.addCase(forgotPasswordAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(passwordResetAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(passwordResetAction.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(passwordResetAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

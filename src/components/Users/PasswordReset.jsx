@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { AiOutlineLock } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { passwordResetAction } from "../../redux/slices/users/usersSlice";
 import Error from "../Alert/Error";
 import Loading from "../Alert/Loading";
 import Success from "../Alert/Success";
 
 export const PasswordReset = () => {
+  const dispatch = useDispatch();
+  const { token } = useParams();
+
   const [formData, setFormData] = useState({
     password: "",
   });
@@ -16,6 +21,13 @@ export const PasswordReset = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    dispatch(
+      passwordResetAction({
+        resetToken: token,
+        password: formData.password,
+      })
+    );
 
     setFormData({
       password: "",

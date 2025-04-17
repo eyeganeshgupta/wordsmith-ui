@@ -14,6 +14,7 @@ import { PasswordReset } from "./components/Users/PasswordReset";
 import PasswordResetRequest from "./components/Users/PasswordResetRequest";
 import PrivateUserProfile from "./components/Users/PrivateUserProfile";
 import PublicUserProfile from "./components/Users/PublicUserProfile";
+import UpdateUser from "./components/Users/UpdateUser";
 import UploadCoverImage from "./components/Users/UploadCoverImage";
 import UploadProfileImage from "./components/Users/UploadProfileImage";
 
@@ -113,6 +114,15 @@ function App() {
         <Route path="/forgot-password" element={<PasswordResetRequest />} />
 
         <Route path="/reset-password/:token" element={<PasswordReset />} />
+
+        <Route
+          path="/update-profile"
+          element={
+            <ProtectedRoute>
+              <UpdateUser />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

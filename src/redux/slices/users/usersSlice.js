@@ -327,6 +327,28 @@ export const passwordResetAction = createAsyncThunk(
   }
 );
 
+export const updateUserProfileAction = createAsyncThunk(
+  "users/update-user-profile",
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${USERS_API}/update-profile/`,
+        payload,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // ! Users slice for handling actions like login, registration, profile updates, etc.
 const usersSlice = createSlice({
   name: "users",
@@ -566,6 +588,23 @@ const usersSlice = createSlice({
     builder.addCase(passwordResetAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
+    });
+
+    builder.addCase(updateUserProfileAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(updateUserProfileAction.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isUpdated = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(updateUserProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+      state.isUpdated = false;
     });
 
     // Resetting success and error states

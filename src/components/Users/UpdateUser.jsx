@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import "tailwindcss/tailwind.css";
+import { updateUserProfileAction } from "../../redux/slices/users/usersSlice";
 
 const UpdateUser = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,13 @@ const UpdateUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    dispatch(
+      updateUserProfileAction({
+        username: formData?.username,
+        email: formData?.email,
+      })
+    );
     setFormData({
       username: "",
       email: "",

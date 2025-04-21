@@ -25,7 +25,7 @@ const PostLists = () => {
 
   // dispatch fetching posts
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction({ page, limit: 4, searchTerm }));
+    dispatch(fetchPrivatePostsAction({ page, limit: 4, searchTerm, category }));
     dispatch(fetchAllCategoriesAction());
   }, [dispatch, page, searchTerm, category]);
 

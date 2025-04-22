@@ -236,6 +236,33 @@ export const viewPostCountAction = createAsyncThunk(
   }
 );
 
+export const schedulePostAction = createAsyncThunk(
+  "posts/schedule-post",
+  async ({ postId, scheduledPublish }, { rejectWithValue, getState }) => {
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${POSTS_API}/schedule/${postId}`,
+        {
+          scheduledPublish,
+        },
+        config
+      );
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Slice
 const postsSlice = createSlice({
   name: "posts",
@@ -413,6 +440,20 @@ const postsSlice = createSlice({
     builder.addCase(viewPostCountAction.rejected, (state, action) => {
       state.error = action.payload;
       state.post = null;
+      state.loading = false;
+    });
+
+    builder.addCase(schedulePostAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(schedulePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(schedulePostAction.rejected, (state, action) => {
+      state.error = action.payload;
       state.loading = false;
     });
 

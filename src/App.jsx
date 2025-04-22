@@ -7,6 +7,7 @@ import PublicNavbar from "./components/Navbar/PublicNavbar";
 import AddPost from "./components/Posts/AddPost";
 import PostDetails from "./components/Posts/PostDetails";
 import PostLists from "./components/Posts/PostLists";
+import SchedulePost from "./components/Posts/SchedulePost";
 import UpdatePost from "./components/Posts/UpdatePost";
 import AccountVerification from "./components/Users/AccountVerification";
 import Login from "./components/Users/Login";
@@ -120,6 +121,15 @@ function App() {
           element={
             <ProtectedRoute>
               <UpdateUser />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/posts/schedule/:post"
+          element={
+            <ProtectedRoute>
+              <SchedulePost />
             </ProtectedRoute>
           }
         />
